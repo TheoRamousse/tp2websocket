@@ -1,0 +1,16 @@
+<form [formGroup]="colorForm">
+  <label for="color">Choisissez une couleur :</label>
+  <select id="color" formControlName="selectedColor">
+    <option value="red">Rouge</option>
+    <option value="blue">Bleu</option>
+    <option value="green">Vert</option>
+  </select>
+</form>
+
+<table>
+  <tr *ngFor="let row of rows; let i = index">
+    <td *ngFor="let col of cols; let j = index" (click)="cellClicked(i, j)" [ngStyle]="{ 'background-color': colors[i][j] }">
+      ‎
+    </td>
+  </tr>
+</table>
