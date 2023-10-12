@@ -42,7 +42,7 @@ ng serve
 Se rendre ensuite sur wamp dans la partie PHPMyAdmin et exécuter le script qui se trouve dans le dossier scripts du repo
 ![PhpMyAdmin](./images/phpmyadmin.png)
 
-Pour finir, démarrer le projet C# sur VS2022 qui se trouve dans le dossier "Serveur Websocket" et remplacer la connection string de la db par la votre dans Program.cs : 
+Pour finir, démarrer le projet C# sur VS2022 qui se trouve dans le dossier "Serveur Websocket" et remplacer la connection string de la db par la votre dans "appsettings.json" : 
 
 ![VS2022](./images/vs.png)
 
