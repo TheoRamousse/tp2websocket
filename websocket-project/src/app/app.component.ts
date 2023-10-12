@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { WebsocketService } from './services/websocket.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,9 @@ export class AppComponent {
   service: WebsocketService
   colorForm: FormGroup;
   private cellSize = 10;
-  rows = Array.from({ length: 100 }, (_, i) => i);
-  cols = Array.from({ length: 100 }, (_, i) => i);
-  colors: string[][] = Array.from({ length: 100 }, () => Array(100).fill('white'));
+  rows = Array.from({ length: environment.xMax }, (_, i) => i);
+  cols = Array.from({ length: environment.yMax }, (_, i) => i);
+  colors: string[][] = Array.from({ length: environment.xMax }, () => Array(environment.yMax).fill('white'));
   @ViewChild('canvasElement') canvasElement!: ElementRef<HTMLCanvasElement>;
   private ctx!: CanvasRenderingContext2D;
 

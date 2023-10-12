@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  urlWebSocket: 'ws://localhost:5007'
+  urlWebSocket: 'ws://localhost:5007',
+  xMax: 700,
+  yMax: 1000
 };
 
 /*
