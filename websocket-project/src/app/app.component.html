@@ -1,0 +1,14 @@
+<form [formGroup]="colorForm">
+  <label for="color">Choisissez une couleur :</label>
+  <select id="color" formControlName="selectedColor">
+    <option value="red">Rouge</option>
+    <option value="blue">Bleu</option>
+    <option value="green">Vert</option>
+  </select>
+</form>
+
+<canvas #canvasElement 
+  width="700"
+  height="1000"
+  (click)="canvasClicked($event)">
+</canvas>
