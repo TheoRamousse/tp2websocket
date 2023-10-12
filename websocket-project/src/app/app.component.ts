@@ -81,7 +81,7 @@ export class AppComponent {
     const x = event.clientX - canvasRect.left;
     const y = event.clientY - canvasRect.top;
 
-    this.service.send(this.colorForm.value + " " + x + " " + y)
+    this.service.send(this.colorForm.controls['selectedColor'].value + " " + x + " " + y)
   }
 
 
