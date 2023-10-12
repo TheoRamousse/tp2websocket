@@ -7,10 +7,8 @@
   </select>
 </form>
 
-<table>
-  <tr *ngFor="let row of rows; let i = index">
-    <td *ngFor="let col of cols; let j = index" (click)="cellClicked(i, j)" [ngStyle]="{ 'background-color': colors[i][j] }">
-      ‎
-    </td>
-  </tr>
-</table>
+<canvas #canvasElement 
+  width="700"
+  height="1000"
+  (click)="canvasClicked($event)">
+</canvas>
