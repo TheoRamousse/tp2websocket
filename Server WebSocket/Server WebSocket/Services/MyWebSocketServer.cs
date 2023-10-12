@@ -10,17 +10,27 @@ namespace Server_WebSocket.Services
 
     public class MyWebSocketServer : WebSocketServer
     {
-        private const int _xTotal = 700;
-        private const int _yTotal = 1000;
-        private bool _stopThread = false;
+        private int _xTotal;
+        private int _yTotal;
+        private DatabaseService _dbService;
 
-        private string[,] _listOfPixels = new string[_xTotal, _yTotal];
+        private string[,] _listOfPixels;
 
 
 
-        public MyWebSocketServer(): base()
+        public MyWebSocketServer(int x, int y, DatabaseService dbService): base()
         {
-            for(int i = 0; i < 700 * 1000; i++) _listOfPixels[i % 700, i / 1000] = "white";
+            _xTotal = x;
+            _yTotal = y;
+            _dbService = dbService;
+            _listOfPixels = _dbService.GetAll();
+
+            for (int i = 0; i < x * y; i++)
+            {
+                if(string.IsNullOrEmpty(_listOfPixels[i % x, i / y]))
+                    _listOfPixels[i % x, i / y] = "white";
+            }
+
             this.NewMessageReceived += ReceiveMessage;
         }
 
@@ -38,7 +48,10 @@ namespace Server_WebSocket.Services
 
                 _listOfPixels[x, y] = color;
 
-                this.GetAllSessions().ToList().ForEach(session => session.Send(x + " " + y + " " + _listOfPixels[x, y]));
+                var data = x + " " + y + " " + _listOfPixels[x, y];
+
+                this.GetAllSessions().ToList().ForEach(session => session.Send(data));
+                this._dbService.Upsert(data);
             }
         }
 
