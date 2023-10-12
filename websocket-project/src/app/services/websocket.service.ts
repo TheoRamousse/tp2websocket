@@ -18,16 +18,37 @@ export class WebsocketService {
   }
   
   private onOpen() {
-    console.log('Connexion WebSocket ouverte.');
+    var self = this;
+    this.waitForSocketConnection(this.socket, function(){
+      self.send("GET")
+    })
   }
+
+  private waitForSocketConnection(socket: any, callback: any){
+    var self = this;
+    setTimeout(
+        function () {
+            console.log(socket.readyState)
+            if (socket.readyState === 1) {
+                console.log("Connection is made")
+                if (callback != null){
+                    callback();
+                }
+            } else {
+                console.log("wait for connection...")
+                self.waitForSocketConnection(socket, callback);
+            }
+
+        }, 5); // wait 5 milisecond for the connection...
+}
   
   private onClose(event : CloseEvent) {
     console.log('Connexion WebSocket fermée.', event);
   }
   
   private onMessage(event : MessageEvent) {
-    this.currentData.next(event.data)
-    console.log('Message reçu :', event.data);
+    var msgAsString = (event.data as string)
+    this.currentData.next(msgAsString)
 
   }
   

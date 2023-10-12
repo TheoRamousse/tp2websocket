@@ -15,7 +15,6 @@ namespace Server_WebSocket.Services
         private bool _stopThread = false;
 
         private string[,] _listOfPixels = new string[_xTotal, _yTotal];
-        private Thread t;
 
 
 
@@ -23,51 +22,39 @@ namespace Server_WebSocket.Services
         {
             for(int i = 0; i < 700 * 1000; i++) _listOfPixels[i % 700, i / 1000] = "white";
             this.NewMessageReceived += ReceiveMessage;
-            t = new(new ThreadStart(LoopSendRefresh));
-        }
-
-        public override bool Start()
-        {
-            t.Start();
-            return base.Start();
-        }
-
-        public override void Stop()
-        {
-            _stopThread = true;
-            base.Stop();
         }
 
         private void ReceiveMessage(WebSocketSession session, string value)
         {
-            var splittedMsg = value.Split(" ");
-            string color = splittedMsg[0];
-            int x = int.Parse(splittedMsg[1]);
-            int y = int.Parse(splittedMsg[2]);
-
-            _listOfPixels[x, y] = color;
-        }
-
-        private void LoopSendRefresh()
-        {
-            while (!_stopThread)
+            if(value == "GET")
             {
-                Thread.Sleep(1000);
-                this.GetAllSessions().ToList().ForEach(session => session.Send(PixelsAsString()));
+                session.Send("GET " + PixelsAsString());
+            }
+            else {
+                var splittedMsg = value.Split(" ");
+                string color = splittedMsg[0];
+                int x = int.Parse(splittedMsg[1]);
+                int y = int.Parse(splittedMsg[2]);
+
+                _listOfPixels[x, y] = color;
+
+                this.GetAllSessions().ToList().ForEach(session => session.Send(x + " " + y + " " + _listOfPixels[x, y]));
             }
         }
 
         private string PixelsAsString()
         {
-            string result = "";
+            StringBuilder result = new StringBuilder();
             for (int x = 0; x < _xTotal; x++){
+                Console.WriteLine("x : " + x);
                 for (int y = 0; y < _yTotal; y++)
                 {
-                    result += x + " " + y + " " + _listOfPixels[x, y];
+                    Console.WriteLine("y : " + y);
+                    result.Append(x).Append(" ").Append(y).Append(" ").Append(_listOfPixels[x, y]).Append(",");
                 }
             }
 
-            return result;
+            return result.ToString();
         }
 
     }
