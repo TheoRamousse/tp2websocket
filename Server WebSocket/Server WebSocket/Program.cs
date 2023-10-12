@@ -13,6 +13,7 @@ class Program
 
         ws.Setup(port);
 
+        Console.WriteLine("Server started on port " + port);
         ws.Start();
 
         Console.ReadKey();

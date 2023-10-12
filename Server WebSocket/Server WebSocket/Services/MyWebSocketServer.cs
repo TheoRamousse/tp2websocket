@@ -12,6 +12,7 @@ namespace Server_WebSocket.Services
     {
         private const int _xTotal = 700;
         private const int _yTotal = 1000;
+        private bool _stopThread = false;
 
         private string[,] _listOfPixels = new string[_xTotal, _yTotal];
         private Thread t;
@@ -33,7 +34,7 @@ namespace Server_WebSocket.Services
 
         public override void Stop()
         {
-            t.Interrupt();
+            _stopThread = true;
             base.Stop();
         }
 
@@ -49,7 +50,7 @@ namespace Server_WebSocket.Services
 
         private void LoopSendRefresh()
         {
-            while (true)
+            while (!_stopThread)
             {
                 Thread.Sleep(1000);
                 this.GetAllSessions().ToList().ForEach(session => session.Send(PixelsAsString()));
