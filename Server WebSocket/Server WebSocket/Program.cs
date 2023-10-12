@@ -5,11 +5,18 @@ using Server_WebSocket.Services;
 
 class Program
 {
-    private static ServerService _server = new ServerService();
+    private static int port = 5007;
 
     public static async Task Main()
     {
-        Console.WriteLine("Starting server");
-        await _server.StartAsync("TODO");
+        MyWebSocketServer ws = new MyWebSocketServer();
+
+        ws.Setup(port);
+
+        ws.Start();
+
+        Console.ReadKey();
+
+        ws.Stop();
     }
 }
